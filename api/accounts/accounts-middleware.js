@@ -1,4 +1,5 @@
 const db = require("./accounts-model")
+const dbConfig = require("../../data/db-config")
 exports.checkAccountPayload = (req, res, next) => {
   if(!req.body.name || !req.body.budget){
     res.status(400).json({message: "name and budget are required"})
@@ -24,7 +25,16 @@ exports.checkAccountPayload = (req, res, next) => {
 }
 
 exports.checkAccountNameUnique = (req, res, next) => {
-  // DO YOUR MAGIC
+  dbConfig.select("name")
+    .from("accounts")
+    .where("name", req.body.name)
+    .then(nameList => {
+      if(nameList.length === 0){
+        next()
+      }else{
+        res.status(400).json({ message: "that name is taken" })
+      }
+    })
 }
 
 exports.checkAccountId = (req, res, next) => {
