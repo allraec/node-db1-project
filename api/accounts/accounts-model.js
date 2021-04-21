@@ -11,7 +11,11 @@ const getById = id => {
 }
 
 const create = account => {
-  // DO YOUR MAGIC
+  return db('accounts')
+    .insert(account)
+    .then(id => {
+      return getById(id[0])
+    })
 }
 
 const updateById = (id, account) => {

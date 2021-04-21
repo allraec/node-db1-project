@@ -1,12 +1,12 @@
 const db = require("./accounts-model")
 exports.checkAccountPayload = (req, res, next) => {
-/*   if(!req.body.name || !req.body.budget){
+  if(!req.body.name || !req.body.budget){
     res.status(400).json({message: "name and budget are required"})
   } else{
     if(typeof req.body.name !== 'string'){
       res.status(400).json({ message: "name of account must be a string" })
     }else{
-      if(req.body.name.length < 3 || req.body.length > 100 ){
+      if(req.body.name.length < 3 || req.body.name.length > 100 ){
         res.status(400).json({ message: "name of account must be between 3 and 100" })
       }else{
         if(typeof req.body.budget !=='number'){
@@ -20,7 +20,7 @@ exports.checkAccountPayload = (req, res, next) => {
         }
       }
     }
-  } */
+  }
 }
 
 exports.checkAccountNameUnique = (req, res, next) => {
