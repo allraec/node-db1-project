@@ -1,4 +1,5 @@
 const db = require("./accounts-model")
+const { checkAccountId } = require("./accounts-middleware")
 const router = require('express').Router()
 
 router.get('/', async (req, res, next) => {
@@ -10,8 +11,13 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:id', (req, res, next) => {
-  // DO YOUR MAGIC
+router.get('/:id', checkAccountId, async (req, res, next) => {
+  try{
+    const account = await db.getById(req.params.id)
+    res.json(account)
+  }catch (err) {
+    next(err)
+  }
 })
 
 router.post('/', (req, res, next) => {
@@ -27,7 +33,11 @@ router.delete('/:id', (req, res, next) => {
 })
 
 router.use((err, req, res, next) => { // eslint-disable-line
-  // DO YOUR MAGIC
+  console.log(err)
+
+	res.status(500).json({
+		message: "Something went wrong",
+	})
 })
 
 module.exports = router;
