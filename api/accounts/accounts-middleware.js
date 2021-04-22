@@ -44,7 +44,7 @@ exports.checkAccountId = (req, res, next) => {
         req.account = account;
         next();
       }else{
-        res.status(400).json({ message: "account not found" })
+        res.status(404).json({ message: "account not found" })
       }
     })
     .catch(err => {
