@@ -20,7 +20,7 @@ router.get('/:id', checkAccountId, async (req, res, next) => {
   }
 })
 
-router.post('/', checkAccountNameUnique, checkAccountPayload, async (req, res, next) => {
+router.post('/', checkAccountPayload, checkAccountNameUnique, async (req, res, next) => {
   try{
     const payload = {
       name: req.body.name,
@@ -33,8 +33,30 @@ router.post('/', checkAccountNameUnique, checkAccountPayload, async (req, res, n
   }
 })
 
-router.put('/:id', (req, res, next) => {
-  // DO YOUR MAGIC
+router.put('/:id', checkAccountPayload, checkAccountNameUnique, checkAccountId, async (req, res, next) => {
+  try{
+    const payload = {
+      name: req.body.name,
+      budget: req.body.budget
+    }
+    db.updateById(req.params.id, payload)
+      .then(count => {
+        if(count > 0){
+          db.getById(req.params.id)
+            .then(account => {
+              res.json(account)
+            })
+            .catch(err => next(err))
+        }else{
+          next()
+        }
+      })
+      .catch(err => {
+        next(err)
+      })
+  }catch(err) {
+    next(err)
+  }
 });
 
 router.delete('/:id', (req, res, next) => {
